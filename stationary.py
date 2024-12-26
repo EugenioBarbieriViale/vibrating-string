@@ -29,30 +29,22 @@ class String:
             xi = self.x0 + i * self.radius
             yi = self.y0 - np.sin(self.nodes * i / self.n * np.pi) * self.initial_displacement
 
-            # xi = self.x0 + i * self.radius
-            # yi = self.y0
-
             self.string.append(pygame.math.Vector2(xi, yi))
 
         self.vys = [0.0 for i in range(self.n)]
 
-        self.theta = 0
-
         self.dt = 1 / FPS
 
     def move(self):
-        # self.theta += 0.1
-        self.oscillating_y0 = self.y0 + np.sin(self.theta) * self.initial_displacement
-
         for i in range(self.n):
-            ay = - self.k * (self.string[i].y - self.oscillating_y0) / self.m
+            ay = - self.k * (self.string[i].y - self.y0) / self.m
             self.vys[i] += ay * self.dt
 
         for i in range(self.n):
             self.string[i].y += self.vys[i]
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (0,255,0), (self.x0, self.oscillating_y0), self.radius*2)
+        pygame.draw.circle(screen, (0,255,0), (self.x0, self.y0), self.radius*2)
         pygame.draw.circle(screen, (0,255,0), (self.x0 + self.length, self.y0), self.radius*2)
 
         for s in self.string:
